@@ -93,9 +93,16 @@ body {
 }
 
 .header-nav ul li {
+  text-decoration: none;
   padding: 0.5rem 0px;
   width: 100%;
   text-align: center;
+}
+
+.header-nav ul li a {
+  display: block;
+  color: inherit;
+  text-decoration: none;
 }
 
 .header-nav ul li:hover {
@@ -213,6 +220,24 @@ main {
 
 footer {
   margin-top: 2rem;
+}
+
+
+#inv-display {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1;
+  gap: 16px;
+}
+
+#inv-display li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.namePrice {
+  display: flex;
+  flex-direction: column;
 }
 
 
