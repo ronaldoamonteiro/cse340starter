@@ -1,6 +1,7 @@
 const invModel = require("../models/inventory-model")
 const Util = {}
 
+
 /* ************************
  * Constructs the nav HTML unordered list
  ************************** */
@@ -57,7 +58,41 @@ Util.buildClassificationGrid = async function(data){
       grid += '<p class="notice">Sorry, no matching vehicles could be found.</p>'
     }
     return grid
+}
+
+Util.buildProductDetailView = async function (data) {
+  let grid;
+  if(data.length > 0) {
+    grid = `<div id="product-detail-container">`;
+    data.forEach(product => {
+      grid += '<span>'
+        grid += '<a id="product-detail-img" href="./'+ product.inv_id 
+          + '" title="View ' + product.inv_make + ' '+ product.inv_model 
+          + 'details"><img src="' + product.inv_image 
+          +'" alt="Image of '+ product.inv_make + ' ' + product.inv_model 
+          + ' on CSE Motors" /></a>'
+      grid += '</span>';
+      grid += '<ul class="product-info">';
+        grid += '<li class="header">';
+          grid += '<p>' + product.inv_description + '</p>';
+        grid += '</li>';
+        // 
+        grid += '<li class="additional-info">';
+          grid += '<p><b>Make: </b> ' + product.inv_make + '</p>';
+          grid += '<p><b>Model: </b>' + product.inv_model + '</p>';
+          grid += '<p><b>Color: </b>' + product.inv_color + '</p>';
+          grid += '<p><b>Year: </b>' + product.inv_year + '</p>';
+          grid += '<p><b>Mileage: </b>' + product.inv_miles + '</p>';
+          grid += '<p><b>Price: </b>' + Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(product.inv_price) + '</p>';
+        grid += '</li>'
+      grid += '</ul>'
+    })
+    grid += '</div>';
   }
+
+
+  return grid;
+}
 
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next)
 

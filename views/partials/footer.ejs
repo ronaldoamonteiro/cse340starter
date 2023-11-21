@@ -1,7 +1,5 @@
-<% 
-    const d = new Date()
-    let year = d.getFullYear()
-%>
-<footer>
-    <p class="copyright">&copy; <%= year %>, CSE 340 App</p>
-</footer>
+<% const year=(new Date()).getFullYear()%>
+    <footer>
+        <p class="copyright">&copy; <%= year %>, CSE 340 App</p>
+        <p><a href="/inv/broken" title="Intentional error exception">Error Link</a></p>
+    </footer>
