@@ -1,0 +1,26 @@
+<% if (title) { %>
+    <h1>
+        <%= title %>
+    </h1>
+    <h1>
+        <%- messages() %>
+    </h1>
+    <div class="login-items-container">
+        <div class="login-form-container">
+            <form class="login-form">
+                <div class="input-container">
+                    <label for="email-input">Email:</label>
+                    <input type="text" id="email-input" placeholder="E-mail">
+                </div>
+                <div class="input-container">
+                    <label for="email-input">Password:</label>
+                    <input type="text" id="email-input" placeholder="Password">
+                </div>
+                <div class="login-button-container">
+                    <button class="login-button" type="submit">LOGIN</button>
+                </div>
+            </form>
+            <p>No account? <a href="/sign-up">Sign-up</a></p>
+        </div>
+    </div>
+<% } else { res.redirect('/') } %>
