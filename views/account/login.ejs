@@ -5,22 +5,22 @@
     <h1>
         <%- messages() %>
     </h1>
-    <div class="login-items-container">
-        <div class="login-form-container">
-            <form class="login-form">
+    <div class="items-container">
+        <div class="form-container">
+            <form class="form">
                 <div class="input-container">
                     <label for="email-input">Email:</label>
-                    <input type="text" id="email-input" placeholder="E-mail">
+                    <input type="email" id="email-input" placeholder="E-mail">
                 </div>
                 <div class="input-container">
-                    <label for="email-input">Password:</label>
-                    <input type="text" id="email-input" placeholder="Password">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" placeholder="Password">
                 </div>
-                <div class="login-button-container">
-                    <button class="login-button" type="submit">LOGIN</button>
+                <div class="button-container">
+                    <button class="button" type="submit">LOGIN</button>
                 </div>
             </form>
-            <p>No account? <a href="/sign-up">Sign-up</a></p>
+            <p>No account? <a href="/account/registration">Sign-up</a></p>
         </div>
     </div>
 <% } else { res.redirect('/') } %>
