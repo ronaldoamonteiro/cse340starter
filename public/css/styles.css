@@ -1,13 +1,10 @@
-
-
 :root {
   --dark-300: #333;
   --dark-600: #777;
-  --blue: #01579B;
-  --primary: #0FB4D4;
-  --light: #FFF;
+  --blue: #01579b;
+  --primary: #0fb4d4;
+  --light: #fff;
 }
-
 
 /******* Change Box Model ***************/
 *,
@@ -19,10 +16,9 @@
 }
 
 html {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   /* font-family: 'Noto Serif', serif; */
 }
-
 
 body {
   background-image: url("/images/site/small_check.jpg");
@@ -63,7 +59,6 @@ body {
   justify-content: space-between;
   color: var(--dark-300);
 }
-
 
 .siteName a {
   text-decoration: none;
@@ -110,7 +105,6 @@ body {
   cursor: pointer;
 }
 
-
 /* Delorean */
 main {
   width: 100%;
@@ -118,12 +112,12 @@ main {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  font-family: 'Noto Serif', serif;
+  font-family: "Noto Serif", serif;
 }
 
 #delorean-cta {
   position: relative;
-  background-image: url('/images/vehicles/delorean.jpg');
+  background-image: url("/images/vehicles/delorean.jpg");
   background-position: center;
   background-repeat: no-repeat;
   min-height: 18.75rem;
@@ -132,7 +126,6 @@ main {
   align-items: center;
   justify-content: center;
 }
-
 
 #cta-container {
   position: absolute;
@@ -147,13 +140,11 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-
-#vehicle-name span{
+#vehicle-name span {
   font-size: 1.5rem;
   font-weight: bold;
   color: var(--primary);
 }
-
 
 #vehicle-features {
   color: var(--primary);
@@ -184,7 +175,7 @@ main {
   width: 100%;
 }
 
-.upgrades-container-title span{
+.upgrades-container-title span {
   font-size: 1.25rem;
   font-weight: bold;
 }
@@ -225,7 +216,6 @@ footer {
   gap: 16px;
 }
 
-
 #inv-display {
   list-style: none;
   display: grid;
@@ -261,7 +251,6 @@ footer {
   font-size: 1rem;
 }
 
-
 #product-detail-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -281,7 +270,6 @@ footer {
   grid-template-rows: repeat(2, auto);
   gap: 1rem;
 }
-
 
 .product-info .header li {
   list-style: none;
@@ -304,8 +292,6 @@ footer {
   font-size: 1.25rem;
 }
 
-
-
 /* Login Form */
 
 .items-container {
@@ -325,7 +311,6 @@ footer {
   align-items: center;
   gap: 1rem;
 }
-
 
 .form-container p {
   color: var(--light);
@@ -355,6 +340,10 @@ footer {
   color: var(--light);
 }
 
+.input-container span {
+  max-width: 20rem;
+}
+
 .input-container input {
   padding-left: 1rem;
   font-size: 0.875rem;
@@ -379,11 +368,28 @@ footer {
   transform: scale(1.1);
 }
 
+input:required:invalid,
+input:focus:invalid {
+  /* insert your own styles for invalid form input */
+  border: 1px solid red;
+}
 
+input:required:valid {
+  /* insert your own styles for valid form input */
+  border: 1px solid green;
+}
 
+/* Notice */
+.notice {
+  font-size: 1rem;
+  font-weight: bold;
+}
 
-@media(max-width: 576px) {
+.notice li {
+  color: red;
+}
 
+@media (max-width: 576px) {
   html {
     font-size: 62.5%;
   }
@@ -391,7 +397,7 @@ footer {
   body {
     padding: unset;
   }
-  
+
   #section {
     max-width: unset;
     height: 100vh;
@@ -454,23 +460,18 @@ footer {
     width: 4rem;
   }
 
-
   #product-detail-img img {
     height: 80%;
   }
-
 
   #product-detail-container {
     grid-template-columns: repeat(1, auto);
     gap: unset;
   }
 
-
-
-  .product-info .header p{
+  .product-info .header p {
     font-size: 1.5rem;
   }
-
 
   .additional-info p {
     font-size: 1.25rem;
