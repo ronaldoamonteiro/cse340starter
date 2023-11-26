@@ -22,6 +22,40 @@ async function buildRegister(req, res, next) {
   });
 }
 
+async function validateLogin(req, res) {
+  let nav = await utilities.getNav();
+
+  const { account_email, account_password } = req.body;
+
+  const regResult = await accountModel.checkExistingEmail(account_email);
+
+  console.log({ regResult });
+
+  // if (regResult != null && account_password === regResult?.account_password) {
+  //   req.flash("notice", "You are logged in!");
+  //   res.status(201).render("account/login", {
+  //     title: "Login",
+  //     nav,
+  //     errors: null,
+  //   });
+  // }
+  if (regResult === 1) {
+    req.flash("notice", "You are logged in!");
+    res.status(201).render("", {
+      title: "Login",
+      nav,
+      errors: null,
+    });
+  } else {
+    req.flash("notice", "Sorry, email and password do not match.");
+    res.status(501).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+    });
+  }
+}
+
 /* ****************************************
  *  Process Registration
  * *************************************** */
@@ -62,4 +96,4 @@ async function registerAccount(req, res) {
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount };
+module.exports = { buildLogin, buildRegister, registerAccount, validateLogin };

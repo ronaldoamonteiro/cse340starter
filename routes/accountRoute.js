@@ -11,9 +11,17 @@ router.get(
 );
 router.post(
   "/register",
-  regValidate.registationRules(),
-  regValidate.checkRegData,
+  regValidate.registationRules(), // Sanitizes the data
+  regValidate.checkRegData, //
   utilities.handleErrors(accountController.registerAccount)
+);
+
+// Process the login attempt
+router.post(
+  "/login",
+  regValidate.loginFormValidation(),
+  regValidate.checkLoginData, // If there is an error, it goes back to the same page
+  utilities.handleErrors(accountController.validateLogin)
 );
 
 module.exports = router;
