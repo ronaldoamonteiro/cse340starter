@@ -4,15 +4,15 @@
   </h1>
   <% } else { res.redirect('/') } %>
     <h1>
-      <%- messages() %>
+      <%= messages() %>
     </h1>
     <% if (errors) { %>
       <ul class="notice">
         <% errors.array().forEach(error=> { %>
-          <link>
-          <%= error.msg %>
-            </li>
-            <% }) %>
+          <li>
+            <%= error.msg %>
+          </li>
+          <% }) %>
       </ul>
       <% } %>
         <div class="items-container">
@@ -59,11 +59,14 @@
                 value="<%= locals.classification_id %>">
                 <!-- Add options dynamically here -->
                 <!-- selectOptions variable comes from the controller and has all the categories we can display -->
-                <% selectOptions?.map((option)=> { %>
+
+                <% selectOptions.map((option)=> { %>
                   <option value="<%=option.classification_id%>">
                     <%=option.classification_name%>
                   </option>
                   <% }) %>
+
+
               </select>
             </div>
             <button class="button" type="submit">Add classification</button>

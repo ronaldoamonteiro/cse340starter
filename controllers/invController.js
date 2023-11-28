@@ -122,8 +122,8 @@ invCont.addClassification = async (req, res) => {
   if (regResult) {
     req.flash("notice", `Classification name successfully registered!`);
     const nav = await utilities.getNav();
-    res.status(201).render("./inventory/add-classification", {
-      title: "Create Classification",
+    res.status(201).render("./inventory/management", {
+      title: "Management View",
       nav,
       errors: null,
     });
@@ -179,8 +179,6 @@ invCont.addInventoryItem = async (req, res) => {
     inv_color,
     classification_id,
   } = req.body;
-
-  const allClassifications = await invModel.getClassifications();
   const regResult = await invModel.registerInventoryItem(
     inv_make,
     inv_model,
@@ -197,14 +195,14 @@ invCont.addInventoryItem = async (req, res) => {
   if (regResult) {
     req.flash("notice", `Inventory item successfully registered!`);
     const nav = await utilities.getNav();
-    res.status(201).render("./inventory/add-inventory", {
-      title: "Register Inventory Item",
+    res.status(201).render("./inventory/management", {
+      title: "Management View",
       nav,
-      selectOptions: allClassifications.rows,
       errors: null,
     });
   } else {
     req.flash("notice", "Sorry, the inventory item registration failed.");
+    const allClassifications = await invModel.getClassifications();
     let nav = await utilities.getNav();
     res.status(501).render("./inventory/add-inventory", {
       title: "Register Inventory Item",

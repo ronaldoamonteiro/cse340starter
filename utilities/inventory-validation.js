@@ -61,12 +61,18 @@ validate.registerInventoryItemRules = () => {
       .withMessage("Please, provide a valid description"),
     body("inv_image")
       .trim()
-      .isLength({ min: 1 })
-      .withMessage("Please, provide a valid image"),
+      .customSanitizer((inv_image) =>
+        inv_image === "" || inv_image == null
+          ? `\\images\\vehicles\\no-image.png`
+          : `\\images\\vehicles\\${inv_thumbnail}`
+      ),
     body("inv_thumbnail")
       .trim()
-      .isLength({ min: 1 })
-      .withMessage("Please, provide a valid thumbnail"),
+      .customSanitizer((inv_thumbnail) =>
+        inv_thumbnail === "" || inv_thumbnail == null
+          ? `\\images\\vehicles\\no-image-tn.png`
+          : `\\images\\vehicles\\${inv_thumbnail}`
+      ),
     body("inv_price")
       .trim()
       .isLength({ min: 1 })
@@ -117,9 +123,11 @@ validate.checkInventoryRegistrationData = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
+    const allClassifications = await inventoryModel.getClassifications();
     res.render("./inventory/add-inventory", {
       errors,
       title: "Create Classification",
+      selectOptions: allClassifications.rows,
       nav,
       inv_make,
       inv_model,
