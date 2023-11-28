@@ -52,6 +52,7 @@ async function validateLogin(req, res) {
     res.status(501).render("account/login", {
       title: "Login",
       nav,
+      account_email,
       errors: null,
     });
   }
@@ -108,6 +109,9 @@ async function registerAccount(req, res) {
     res.status(501).render("account/registration", {
       title: "Registration",
       nav,
+      account_firstname,
+      account_lastname,
+      account_email,
       errors: null,
     });
   }

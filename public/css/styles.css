@@ -312,12 +312,12 @@ footer {
   gap: 1rem;
 }
 
-.form-container p {
+.items-container-footer p {
   color: var(--light);
   font-size: 1.25rem;
 }
 
-.form-container p a {
+.items-container-footer p a {
   color: var(--light);
 }
 

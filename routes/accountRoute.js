@@ -11,7 +11,7 @@ router.get(
 );
 router.post(
   "/register",
-  regValidate.registationRules(), // Sanitizes the data
+  regValidate.registrationRules(), // Sanitizes the data
   regValidate.checkRegData, //
   utilities.handleErrors(accountController.registerAccount)
 );

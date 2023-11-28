@@ -1,0 +1,71 @@
+<% if (title) { %>
+  <h1>
+    <%= title %>
+  </h1>
+  <% } else { res.redirect('/') } %>
+    <h1>
+      <%- messages() %>
+    </h1>
+    <% if (errors) { %>
+      <ul class="notice">
+        <% errors.array().forEach(error=> { %>
+          <link>
+          <%= error.msg %>
+            </li>
+            <% }) %>
+      </ul>
+      <% } %>
+        <div class="items-container">
+          <form action="/inv/create" method="post" class="form-container">
+            <div class="input-container">
+              <label for="inv_make">Make</label>
+              <input value="<%= locals.inv_make %>" type="text" name="inv_make" id="inv_make">
+            </div>
+            <div class="input-container">
+              <label for="inv_model">Model</label>
+              <input value="<%= locals.inv_model %>" type="text" name="inv_model" id="inv_model">
+            </div>
+            <div class="input-container">
+              <label for="inv_year">Year</label>
+              <input value="<%= locals.inv_year %>" type="text" name="inv_year" id="inv_year">
+            </div>
+            <div class="input-container">
+              <label for="inv_description">Description</label>
+              <input value="<%= locals.inv_description %>" type="text" name="inv_description" id="inv_description">
+            </div>
+            <div class="input-container">
+              <label for="inv_image">Image</label>
+              <input value="<%= locals.inv_image %>" type="file" name="inv_image" id="inv_image">
+            </div>
+            <div class="input-container">
+              <label for="inv_thumbnail">Thumbnail</label>
+              <input value="<%= locals.inv_thumbnail %>" type="file" name="inv_thumbnail" id="inv_thumbnail">
+            </div>
+            <div class="input-container">
+              <label for="inv_price">Price</label>
+              <input value="<%= locals.inv_price %>" type="number" name="inv_price" id="inv_price">
+            </div>
+            <div class="input-container">
+              <label for="inv_miles">Miles</label>
+              <input value="<%= locals.inv_miles %>" type="number" name="inv_miles" id="inv_miles">
+            </div>
+            <div class="input-container">
+              <label for="inv_color">Color</label>
+              <input value="<%= locals.inv_color %>" type="text" name="inv_color" id="inv_color">
+            </div>
+            <div class="input-container">
+              <label for="classification_id">Category/Classification</label>
+              <select type="text" name="classification_id" id="classification_id"
+                value="<%= locals.classification_id %>">
+                <!-- Add options dynamically here -->
+                <!-- selectOptions variable comes from the controller and has all the categories we can display -->
+                <% selectOptions?.map((option)=> { %>
+                  <option value="<%=option.classification_id%>">
+                    <%=option.classification_name%>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
+            <button class="button" type="submit">Add classification</button>
+          </form>
+        </div>
