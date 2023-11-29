@@ -21,7 +21,14 @@ router.post(
   "/login",
   regValidate.loginFormValidation(),
   regValidate.checkLoginData, // If there is an error, it goes back to the same page
-  utilities.handleErrors(accountController.validateLogin)
+  utilities.handleErrors(accountController.accountLogin)
+);
+
+// Management view
+router.get(
+  "/",
+  utilities.checkLogin,
+  utilities.handleErrors(accountController.buildManagementView)
 );
 
 module.exports = router;

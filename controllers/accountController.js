@@ -1,6 +1,8 @@
 const utilities = require("../utilities");
 const accountModel = require("../models/account-model");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 async function buildLogin(req, res, next) {
   let nav = await utilities.getNav();
@@ -21,41 +23,6 @@ async function buildRegister(req, res, next) {
     nav,
     errors: null,
   });
-}
-
-async function validateLogin(req, res) {
-  let nav = await utilities.getNav();
-
-  const { account_email, account_password } = req.body;
-
-  const regResult = await accountModel.checkExistingEmail(account_email);
-
-  console.log({ regResult });
-
-  // if (regResult != null && account_password === regResult?.account_password) {
-  //   req.flash("notice", "You are logged in!");
-  //   res.status(201).render("account/login", {
-  //     title: "Login",
-  //     nav,
-  //     errors: null,
-  //   });
-  // }
-  if (regResult === 1) {
-    req.flash("notice", "You are logged in!");
-    res.status(201).render("", {
-      title: "Login",
-      nav,
-      errors: null,
-    });
-  } else {
-    req.flash("notice", "Sorry, email and password do not match.");
-    res.status(501).render("account/login", {
-      title: "Login",
-      nav,
-      account_email,
-      errors: null,
-    });
-  }
 }
 
 /* ****************************************
@@ -117,4 +84,59 @@ async function registerAccount(req, res) {
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, validateLogin };
+/* ****************************************
+ *  Process login request
+ * ************************************ */
+async function accountLogin(req, res) {
+  let nav = await utilities.getNav();
+  const { account_email, account_password } = req.body;
+  const accountData = await accountModel.getAccountByEmail(account_email);
+  if (!accountData) {
+    req.flash("notice", "Please check your credentials and try again");
+    res.status(400).render("account/login", {
+      title: "Login",
+      nav,
+      errors: null,
+      account_email,
+    });
+
+    return;
+  }
+
+  try {
+    if (await bcrypt.compare(account_password, accountData.account_password)) {
+      // Removes the password key inside the accountData object and returns it to the client
+      delete accountData.account_password;
+      const accessToken = jwt.sign(
+        accountData,
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: 3600 * 1000 }
+      );
+      // Creates the HttpOnly cookie
+      res.cookie("jwt", accessToken, { httpOnly: true, maxAge: 3600 * 1000 });
+      return res.redirect("/account");
+    }
+  } catch (error) {
+    throw new Error("Access Forbidden!");
+  }
+}
+
+/* ****************************************
+ *  Deliver management view
+ * *************************************** */
+async function buildManagementView(req, res, next) {
+  let nav = await utilities.getNav();
+  res.render("account/management", {
+    title: "Management View",
+    nav,
+    errors: null,
+  });
+}
+
+module.exports = {
+  buildLogin,
+  buildRegister,
+  registerAccount,
+  buildManagementView,
+  accountLogin,
+};

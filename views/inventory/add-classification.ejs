@@ -3,29 +3,25 @@
     <%= title %>
   </h1>
   <% } else { res.redirect('/') } %>
-    <% if (messages()) { %>
-      <h1>
-        <%= messages() %>
-      </h1>
-      <% } %>
-        <% if (errors) { %>
-          <ul class="notice">
-            <% errors.array().forEach(error=> { %>
-              <link>
-              <%= error.msg %>
-                </li>
-                <% }) %>
-          </ul>
-          <% } %>
-            <div class="items-container">
-              <form class="form-container" action="/inv/classification" method="post">
-                <div class="input-container">
-                  <label for="classificationName">Add a classification</label>
-                  <input type="text" name="classification_name" id="classificationName"
-                    placeholder="Enter the name of the classification you want to add"
-                    value="<%= locals.classification_name %>" pattern="^[a-zA-Z]+$">
-                  <button class="button" type="submit">Add classification</button>
-                </div>
-              </form>
-            </div>
-            <!-- Next steps: Create the post route, the controller for the post route and the middlewares for the form -->
+    <%= messages() %>
+      <% if (errors) { %>
+        <ul class="notice">
+          <% errors.array().forEach(error=> { %>
+            <link>
+            <%= error.msg %>
+              </li>
+              <% }) %>
+        </ul>
+        <% } %>
+          <div class="items-container">
+            <form class="form-container" action="/inv/classification" method="post">
+              <div class="input-container">
+                <label for="classificationName">Add a classification</label>
+                <input type="text" name="classification_name" id="classificationName"
+                  placeholder="Enter the name of the classification you want to add"
+                  value="<%= locals.classification_name %>" pattern="^[a-zA-Z]+$">
+                <button class="button" type="submit">Add classification</button>
+              </div>
+            </form>
+          </div>
+          <!-- Next steps: Create the post route, the controller for the post route and the middlewares for the form -->

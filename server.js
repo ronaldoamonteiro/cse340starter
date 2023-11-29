@@ -17,6 +17,7 @@ const utilities = require("./utilities/");
 const session = require("express-session");
 const pool = require("./database/");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 
 // View Engine and Templates
 app.set("view engine", "ejs");
@@ -48,6 +49,9 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
+// Checks the JSON Web Token
+app.use(utilities.checkJWTToken);
 
 /* ***********************
  * Routes
