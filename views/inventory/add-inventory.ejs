@@ -3,7 +3,7 @@
     <%= title %>
   </h1>
   <% } else { res.redirect('/') } %>
-    <%= messages() %>
+    <%- messages() %>
       <% if (errors) { %>
         <ul class="notice">
           <% errors.array().forEach(error=> { %>
@@ -58,11 +58,7 @@
                   <!-- Add options dynamically here -->
                   <!-- selectOptions variable comes from the controller and has all the categories we can display -->
 
-                  <% selectOptions.map((option)=> { %>
-                    <option value="<%=option.classification_id%>">
-                      <%=option.classification_name%>
-                    </option>
-                    <% }) %>
+                  <%- classificationSelect %>
 
 
                 </select>

@@ -64,7 +64,7 @@ validate.registerInventoryItemRules = () => {
       .customSanitizer((inv_image) =>
         inv_image === "" || inv_image == null
           ? `\\images\\vehicles\\no-image.png`
-          : `\\images\\vehicles\\${inv_thumbnail}`
+          : `\\images\\vehicles\\${inv_image}`
       ),
     body("inv_thumbnail")
       .trim()
@@ -123,11 +123,11 @@ validate.checkInventoryRegistrationData = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    const allClassifications = await inventoryModel.getClassifications();
+    const classificationSelect = await utilities.buildClassificationList();
     res.render("./inventory/add-inventory", {
       errors,
       title: "Create Classification",
-      selectOptions: allClassifications.rows,
+      classificationSelect,
       nav,
       inv_make,
       inv_model,

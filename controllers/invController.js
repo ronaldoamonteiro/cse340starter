@@ -78,10 +78,13 @@ invCont.showBrokenPage = async function (req, res, next) {
 invCont.showManagementView = async function (req, res, next) {
   try {
     const nav = await utilities.getNav();
+
+    const classificationSelect = await utilities.buildClassificationList();
     res.render("./inventory/management", {
       title: "Management View",
       nav,
       errors: null,
+      classificationSelect,
     });
   } catch (e) {
     if (e instanceof Error) {
@@ -149,15 +152,14 @@ invCont.addClassification = async (req, res) => {
 invCont.showInventoryRegistrationView = async function (req, res, next) {
   try {
     // 'allClassifications' variable returns all the car categories/classifications saved in the database
-    const allClassifications = await invModel.getClassifications();
-    console.log({ allClassifications: allClassifications.rows });
+    const classificationSelect = await utilities.buildClassificationList();
     // Call navbar and render the add-inventory.ejs view
     const nav = await utilities.getNav();
     res.render("./inventory/add-inventory", {
       title: "Register Inventory Item",
       nav,
       errors: null,
-      selectOptions: allClassifications.rows, // selectOptions is the variable name for all the classification items
+      classificationSelect, // selectOptions is the variable name for all the classification items
     });
   } catch (e) {
     if (e instanceof Error) {
@@ -207,12 +209,13 @@ invCont.addInventoryItem = async (req, res) => {
     });
   } else {
     req.flash("notice", "Sorry, the inventory item registration failed.");
-    const allClassifications = await invModel.getClassifications();
+    // const allClassifications = await invModel.getClassifications();
+    const classificationSelect = await utilities.buildClassificationList();
     let nav = await utilities.getNav();
     res.status(501).render("./inventory/add-inventory", {
       title: "Register Inventory Item",
       nav,
-      selectOptions: allClassifications.rows,
+      classificationSelect,
       inv_make,
       inv_model,
       inv_year,

@@ -3,7 +3,7 @@
     <%= title %>
   </h1>
   <% } else { res.redirect('/') } %>
-    <%= messages() %>
+    <%- messages() %>
       <% if (errors) { %>
         <ul class="notice">
           <% errors.array().forEach(error=> { %>
