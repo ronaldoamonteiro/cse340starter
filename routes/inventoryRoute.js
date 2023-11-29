@@ -36,4 +36,9 @@ router.post(
   utilities.handleErrors(invController.addInventoryItem)
 );
 
+router.get(
+  "/getInventory/:classification_id",
+  utilities.handleErrors(invController.getInventoryJSON)
+);
+
 module.exports = router;

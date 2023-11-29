@@ -389,6 +389,19 @@ input:required:valid {
   color: red;
 }
 
+table {
+  background-color: #eee;
+  color: #222;
+}
+
+tbody tr td > a {
+  max-width: fit-content;
+  padding: 0.5rem 1rem;
+}
+tbody td a {
+  color: #222;
+}
+
 @media (max-width: 576px) {
   html {
     font-size: 62.5%;

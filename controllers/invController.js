@@ -231,6 +231,24 @@ invCont.addInventoryItem = async (req, res) => {
   }
 };
 
+/* ***************************
+ *  Return Inventory by Classification As JSON
+ * ************************** */
+invCont.getInventoryJSON = async (req, res, next) => {
+  const classification_id = parseInt(req.params.classification_id);
+  const invData = await invModel.getInventoryByClassificationId(
+    classification_id
+  );
+  if (invData.length === 0) {
+    return res.json([]);
+  }
+  if (invData[0].inv_id) {
+    return res.json(invData);
+  } else {
+    next(new Error("No data returned"));
+  }
+};
+
 // TODO: Create controller for inventory form
 // TODO: Create model as well
 module.exports = invCont;
