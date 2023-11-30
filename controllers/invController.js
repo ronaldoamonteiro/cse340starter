@@ -123,8 +123,7 @@ invCont.addClassification = async (req, res) => {
   const regResult = await invModel.registerClassificationByClassificationName(
     classification_name
   );
-
-  // TODO:  CHECK Default feedback of a POST request
+  const classificationSelect = await utilities.buildClassificationList();
 
   if (regResult) {
     req.flash("notice", `Classification name successfully registered!`);
@@ -133,6 +132,7 @@ invCont.addClassification = async (req, res) => {
       title: "Management View",
       nav,
       errors: null,
+      classificationSelect,
     });
   } else {
     req.flash("notice", "Sorry, the classification registration failed.");
@@ -142,6 +142,7 @@ invCont.addClassification = async (req, res) => {
       nav,
       classification_name,
       errors: null,
+      classificationSelect,
     });
   }
 };
@@ -197,6 +198,7 @@ invCont.addInventoryItem = async (req, res) => {
     inv_color,
     classification_id
   );
+  const classificationSelect = await utilities.buildClassificationList();
 
   if (regResult) {
     req.flash("notice", `Inventory item successfully registered!`);
@@ -205,11 +207,11 @@ invCont.addInventoryItem = async (req, res) => {
       title: "Management View",
       nav,
       errors: null,
+      classificationSelect,
     });
   } else {
     req.flash("notice", "Sorry, the inventory item registration failed.");
     // const allClassifications = await invModel.getClassifications();
-    const classificationSelect = await utilities.buildClassificationList();
     let nav = await utilities.getNav();
     res.status(501).render("./inventory/add-inventory", {
       title: "Register Inventory Item",
@@ -327,6 +329,56 @@ invCont.updateInventory = async (req, res) => {
       inv_color,
       classification_id,
       errors: null,
+    });
+  }
+};
+
+invCont.buildDeleteInventoryItemView = async (req, res, next) => {
+  const inv_id = parseInt(req.params.inv_id);
+  let nav = await utilities.getNav();
+  const itemData = await invModel.getProductByInventoryId(inv_id);
+  // console.log({ itemData });
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+
+  res.render("./inventory/delete-confirm", {
+    title: "Delete " + itemName,
+    nav,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_price: itemData.inv_price,
+  });
+};
+
+invCont.deleteInventoryItem = async (req, res) => {
+  console.log({ body: req.body });
+  const { inv_id, inv_make, inv_model, inv_year, inv_price } = req.body;
+  const deleteResult = await invModel.deleteInventoryItem(parseInt(inv_id));
+
+  const classificationSelect = await utilities.buildClassificationList();
+  if (deleteResult) {
+    req.flash("notice", "Inventory item successfully deleted!");
+    const nav = await utilities.getNav();
+    res.status(201).render("./inventory/management", {
+      title: "Management View",
+      nav,
+      errors: null,
+      classificationSelect,
+    });
+  } else {
+    req.flash("notice", "Sorry, the inventory item deletion failed.");
+    let nav = await utilities.getNav();
+    res.status(501).render("./inventory/delete-confirm", {
+      title: "Delete " + itemName,
+      nav,
+      errors: null,
+      inv_id,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_price,
     });
   }
 };

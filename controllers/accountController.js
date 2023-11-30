@@ -126,10 +126,12 @@ async function accountLogin(req, res) {
  * *************************************** */
 async function buildManagementView(req, res, next) {
   let nav = await utilities.getNav();
+  const classificationSelect = await utilities.buildClassificationList();
   res.render("account/management", {
     title: "Management View",
     nav,
     errors: null,
+    classificationSelect,
   });
 }
 
