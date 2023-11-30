@@ -47,8 +47,7 @@ invCont.showProductByInvId = async function (req, res, next) {
     const grid = await utilities.buildProductDetailView(data);
     let nav = await utilities.getNav();
     res.render("./inventory/classification", {
-      title:
-        data[0].inv_year + " " + data[0].inv_make + " " + data[0].inv_model,
+      title: data.inv_year + " " + data.inv_make + " " + data.inv_model,
       nav,
       grid,
       errors: null,
@@ -246,6 +245,89 @@ invCont.getInventoryJSON = async (req, res, next) => {
     return res.json(invData);
   } else {
     next(new Error("No data returned"));
+  }
+};
+
+invCont.editInventoryView = async (req, res, next) => {
+  const inv_id = parseInt(req.params.inv_id);
+  let nav = await utilities.getNav();
+  const itemData = await invModel.getProductByInventoryId(inv_id);
+  // console.log({ itemData });
+  const classificationSelect = await utilities.buildClassificationList();
+  const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
+
+  res.render("./inventory/edit-inventory", {
+    title: "Edit " + itemName,
+    nav,
+    classificationSelect: classificationSelect,
+    errors: null,
+    inv_id: itemData.inv_id,
+    inv_make: itemData.inv_make,
+    inv_model: itemData.inv_model,
+    inv_year: itemData.inv_year,
+    inv_description: itemData.inv_description,
+    inv_image: itemData.inv_image,
+    inv_thumbnail: itemData.inv_thumbnail,
+    inv_price: itemData.inv_price,
+    inv_miles: itemData.inv_miles,
+    inv_color: itemData.inv_color,
+    classification_id: itemData.classification_id,
+  });
+};
+
+// Edit inventory post/put method
+invCont.updateInventory = async (req, res) => {
+  console.log({ body: req.body });
+  const {
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_year,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_miles,
+    inv_color,
+    classification_id,
+  } = req.body;
+  const updateResult = await invModel.updateInventory(
+    inv_id,
+    inv_make,
+    inv_model,
+    inv_description,
+    inv_image,
+    inv_thumbnail,
+    inv_price,
+    inv_year,
+    inv_miles,
+    inv_color,
+    classification_id
+  );
+  if (updateResult) {
+    req.flash("notice", `Inventory item successfully updated!`);
+    res.redirect("/inv/");
+  } else {
+    req.flash("notice", "Sorry, the inventory item registration failed.");
+    // const allClassifications = await invModel.getClassifications();
+    const classificationSelect = await utilities.buildClassificationList();
+    let nav = await utilities.getNav();
+    res.status(501).render("./inventory/edit-inventory", {
+      title: `Edit ${inv_make} ${inv_model}`,
+      nav,
+      classificationSelect,
+      inv_make,
+      inv_model,
+      inv_year,
+      inv_description,
+      inv_image,
+      inv_thumbnail,
+      inv_price,
+      inv_miles,
+      inv_color,
+      classification_id,
+      errors: null,
+    });
   }
 };
 
