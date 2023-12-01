@@ -2,17 +2,28 @@
   <h1>
     <%= title %>
   </h1>
-  <h1>
-    <%- messages() %>
-  </h1>
-  <% if (errors) { %>
-    <ul class="notice">
-      <% errors.array().forEach(error=> { %>
-        <li>
-          <%= error.msg %>
-        </li>
-        <% }) %>
-    </ul>
-    <% } %>
+  <%- messages() %>
+    <% if (errors) { %>
+      <ul class="notice">
+        <% errors.array().forEach(error=> { %>
+          <li>
+            <%= error.msg %>
+          </li>
+          <% }) %>
+      </ul>
       <% } %>
-        <h1>You're logged in</h1>
+        <% } %>
+          <% if (locals.accountData.account_type==='Client' ) { %>
+            <h2>Welcome, <%= locals.accountData.account_firstname%>!
+            </h2>
+            <p><a title="Update user data" href="/account/update/<%= locals.accountData.account_id%>">Edit Account
+                Information</a></p>
+            <% } else { %>
+              <h2>Welcome, <%= locals.accountData.account_firstname%>!
+              </h2>
+              <p><a title="Update user data" href="/account/update/<%= locals.accountData.account_id%>">Edit Account
+                  Information</a></p>
+              <p>
+                <a title="Access Inventory Management" href="./inv">Manage Inventory</a>
+              </p>
+              <% } %>
