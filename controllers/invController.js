@@ -155,11 +155,15 @@ invCont.showInventoryRegistrationView = async function (req, res, next) {
     const classificationSelect = await utilities.buildClassificationList();
     // Call navbar and render the add-inventory.ejs view
     const nav = await utilities.getNav();
+    const inv_image = "/images/vehicles/no-image.png";
+    const inv_thumbnail = "/images/vehicles/no-image-tn.png";
     res.render("./inventory/add-inventory", {
       title: "Register Inventory Item",
       nav,
       errors: null,
       classificationSelect, // selectOptions is the variable name for all the classification items
+      inv_image,
+      inv_thumbnail,
     });
   } catch (e) {
     if (e instanceof Error) {
@@ -198,7 +202,9 @@ invCont.addInventoryItem = async (req, res) => {
     inv_color,
     classification_id
   );
-  const classificationSelect = await utilities.buildClassificationList();
+  const classificationSelect = await utilities.buildClassificationList(
+    classification_id
+  );
 
   if (regResult) {
     req.flash("notice", `Inventory item successfully registered!`);
@@ -255,7 +261,9 @@ invCont.editInventoryView = async (req, res, next) => {
   let nav = await utilities.getNav();
   const itemData = await invModel.getProductByInventoryId(inv_id);
   // console.log({ itemData });
-  const classificationSelect = await utilities.buildClassificationList();
+  const classificationSelect = await utilities.buildClassificationList(
+    itemData.classification_id
+  );
   const itemName = `${itemData.inv_make} ${itemData.inv_model}`;
 
   res.render("./inventory/edit-inventory", {
@@ -312,7 +320,9 @@ invCont.updateInventory = async (req, res) => {
   } else {
     req.flash("notice", "Sorry, the inventory item registration failed.");
     // const allClassifications = await invModel.getClassifications();
-    const classificationSelect = await utilities.buildClassificationList();
+    const classificationSelect = await utilities.buildClassificationList(
+      classification_id
+    );
     let nav = await utilities.getNav();
     res.status(501).render("./inventory/edit-inventory", {
       title: `Edit ${inv_make} ${inv_model}`,
@@ -333,6 +343,7 @@ invCont.updateInventory = async (req, res) => {
   }
 };
 
+// Delete view
 invCont.buildDeleteInventoryItemView = async (req, res, next) => {
   const inv_id = parseInt(req.params.inv_id);
   let nav = await utilities.getNav();
@@ -352,21 +363,16 @@ invCont.buildDeleteInventoryItemView = async (req, res, next) => {
   });
 };
 
-invCont.deleteInventoryItem = async (req, res) => {
+// Form deletion
+invCont.deleteInventoryItem = async (req, res, next) => {
   console.log({ body: req.body });
   const { inv_id, inv_make, inv_model, inv_year, inv_price } = req.body;
   const deleteResult = await invModel.deleteInventoryItem(parseInt(inv_id));
 
-  const classificationSelect = await utilities.buildClassificationList();
   if (deleteResult) {
     req.flash("notice", "Inventory item successfully deleted!");
-    const nav = await utilities.getNav();
-    res.status(201).render("./inventory/management", {
-      title: "Management View",
-      nav,
-      errors: null,
-      classificationSelect,
-    });
+    return res.status(200).redirect("/inv/");
+    next();
   } else {
     req.flash("notice", "Sorry, the inventory item deletion failed.");
     let nav = await utilities.getNav();

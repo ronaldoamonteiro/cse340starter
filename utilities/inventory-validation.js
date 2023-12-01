@@ -123,7 +123,9 @@ validate.checkInventoryRegistrationData = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    const classificationSelect = await utilities.buildClassificationList();
+    const classificationSelect = await utilities.buildClassificationList(
+      classification_id
+    );
     res.render("./inventory/add-inventory", {
       errors,
       title: "Create Inventory Item",
@@ -164,7 +166,9 @@ validate.checkUpdateData = async (req, res, next) => {
 
   if (!errors.isEmpty()) {
     let nav = await utilities.getNav();
-    const classificationSelect = await utilities.buildClassificationList();
+    const classificationSelect = await utilities.buildClassificationList(
+      classification_id
+    );
     res.render("./inventory/add-inventory", {
       errors,
       title: `Edit ${inv_make} ${inv_model}`,

@@ -15,6 +15,7 @@
         <% } %>
           <div class="items-container">
             <form action="/inv/delete" method="post" class="form-container" id="updateForm">
+              <p>Confirm Deletion - The delete is permanent.</p>
               <div class="input-container" readonly="true">
                 <label for="inv_make">Make</label>
                 <input value="<%= locals.inv_make %>" type="text" name="inv_make" id="inv_make">
@@ -29,7 +30,7 @@
               </div>
               <div class="input-container">
                 <label for="inv_price">Price</label>
-                <input value="<%= locals.inv_price %>" type="number" name="inv_price" id="inv_price">
+                <input readonly="true" value="<%= locals.inv_price %>" type="number" name="inv_price" id="inv_price">
               </div>
               <button class="button" type="submit">Delete vehicle</button>
               <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"

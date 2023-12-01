@@ -133,11 +133,14 @@ Util.buildProductDetailView = async function (data) {
 Util.handleErrors = (fn) => (req, res, next) =>
   Promise.resolve(fn(req, res, next)).catch(next);
 
-Util.buildClassificationList = async () => {
+Util.buildClassificationList = async (classificationId = -1) => {
+  console.log({ classificationId });
   const allClassifications = await invModel.getClassifications();
   let options = "";
   allClassifications.rows.forEach((option) => {
-    options += `<option value=${option.classification_id}>`;
+    options += `<option ${
+      classificationId === option.classification_id ? "selected" : ""
+    } value=${option.classification_id}>`;
     options += `${option.classification_name}`;
     options += "</option>";
   });
