@@ -185,4 +185,15 @@ Util.checkLogin = (req, res, next) => {
   }
 };
 
+Util.authorizeView = (req, res, next) => {
+  // Checks the account type and allows every user that has the account type of Employee or Admin
+  console.log(res.locals.accountData.account_type);
+  if (["Employee", "Admin"].includes(res.locals.accountData.account_type)) {
+    next();
+  } else {
+    req.flash("notice", "You are not authorized to access the current page!");
+    return res.redirect("/account/login");
+    next();
+  }
+};
 module.exports = Util;

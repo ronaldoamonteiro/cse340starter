@@ -44,7 +44,7 @@ invCont.showProductByInvId = async function (req, res, next) {
   try {
     const inventory_id = req.params.inventoryId;
     const data = await invModel.getProductByInventoryId(inventory_id);
-    const grid = await utilities.buildProductDetailView(data);
+    const grid = await utilities.buildProductDetailView([data]);
     let nav = await utilities.getNav();
     res.render("./inventory/classification", {
       title: data.inv_year + " " + data.inv_make + " " + data.inv_model,
