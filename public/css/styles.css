@@ -60,6 +60,15 @@ body {
   color: var(--dark-300);
 }
 
+.logged-user-header {
+  display: flex;
+  gap: 16px;
+}
+
+.logged-user-header a:hover {
+  transform: scale(1.1);
+}
+
 .siteName a {
   text-decoration: none;
   font-size: 2rem;
