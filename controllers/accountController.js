@@ -231,7 +231,6 @@ async function updateAccountPassword(req, res, next) {
 
 async function accountLogout(req, res, next) {
   res.clearCookie("jwt");
-
   req.flash("notice", "User has disconnected from the current session!");
   return res.redirect("/account/login");
   next();
