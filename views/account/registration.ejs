@@ -2,46 +2,47 @@
     <h1>
         <%= title %>
     </h1>
-    <%- messages() %>
-        <% if (errors) { %>
-            <ul class="notice">
-                <% errors.array().forEach(error=> { %>
-                    <li>
-                        <%= error.msg %>
-                    </li>
-                    <% }) %>
-            </ul>
-            <% } %>
-                <div class="items-container">
-                    <form class="form-container" action="/account/register" method="post" class="form">
-                        <div class="input-container">
-                            <label for="first-name-input">First name</label>
-                            <input type="text" name="account_firstname" id="accountFirstname" required
-                                value="<%= locals.account_firstname %>">
-                        </div>
-                        <div class="input-container">
-                            <label for="accountLastName">Last name</label>
-                            <input type="text" name="account_lastname" id="accountLastName" required
-                                value="<%= locals.account_lastname %>">
-                        </div>
-                        <div class="input-container">
-                            <label for="accountEmail">Email</label>
-                            <input type="text" name="account_email" id="accountEmail" required
-                                value="<%= locals.account_email %>">
-                        </div>
-                        <div class="input-container">
-                            <label for="password">Password</label>
-                            <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital
-                                letter and 1
-                                special character</span>
-                            <!-- Must have 1 capital letter, 1 number and special character -->
-                            <input type="password" name="account_password" min="12" id="password"
-                                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
-                                placeholder="Password" required>
-                        </div>
-                        <div class="button-container">
-                            <button type="submit" class="button">REGISTER</button>
-                        </div>
-                    </form>
-                </div>
-                <% } else { res.redirect('/') } %>
+    <% } else { res.redirect('/') } %>
+        <%- messages() %>
+            <% if (errors) { %>
+                <ul class="notice">
+                    <% errors.array().forEach(error=> { %>
+                        <li>
+                            <%= error.msg %>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
+                    <div class="items-container">
+                        <form class="form-container" action="/account/register" method="post" class="form">
+                            <div class="input-container">
+                                <label for="first-name-input">First name</label>
+                                <input type="text" name="account_firstname" id="accountFirstname" required
+                                    value="<%= locals.account_firstname %>">
+                            </div>
+                            <div class="input-container">
+                                <label for="accountLastName">Last name</label>
+                                <input type="text" name="account_lastname" id="accountLastName" required
+                                    value="<%= locals.account_lastname %>">
+                            </div>
+                            <div class="input-container">
+                                <label for="accountEmail">Email</label>
+                                <input type="text" name="account_email" id="accountEmail" required
+                                    value="<%= locals.account_email %>">
+                            </div>
+                            <div class="input-container">
+                                <label for="password">Password</label>
+                                <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital
+                                    letter and 1
+                                    special character</span>
+                                <!-- Must have 1 capital letter, 1 number and special character -->
+                                <input type="password" name="account_password" min="12" id="password"
+                                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+                                    placeholder="Password" required>
+                            </div>
+                            <div class="button-container">
+                                <button type="submit" class="button">REGISTER</button>
+                            </div>
+                        </form>
+                    </div>
+                    <% } else { res.redirect('/') } %>

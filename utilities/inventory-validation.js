@@ -90,7 +90,6 @@ validate.registerInventoryItemRules = () => {
       .isLength({ min: 1 })
       .withMessage("Please, provide a valid category")
       .custom(async (classification_id) => {
-        console.log({ classification_id });
         const classificationIdExists =
           await inventoryModel.getClassificationByClassificationId(
             Number(classification_id)

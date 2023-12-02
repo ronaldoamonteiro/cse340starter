@@ -135,10 +135,116 @@ async function buildManagementView(req, res, next) {
   });
 }
 
+// Update Account View
+async function buildEditAccountView(req, res, next) {
+  // Retrieves the account id
+  const accountId = parseInt(req.params.account_id);
+  // Makes an API call to get the account info
+  const accountData = await accountModel.getAccountByAccountId(accountId);
+  let nav = await utilities.getNav();
+  res.render("account/update-view", {
+    title: "Update Account",
+    nav,
+    errors: null,
+    account_id: accountData.account_id,
+    account_firstname: accountData.account_firstname,
+    account_lastname: accountData.account_lastname,
+    account_email: accountData.account_email,
+  });
+}
+
+// Update Account Data
+async function updateAccount(req, res, next) {
+  // Get all the form data
+  const { account_id, account_firstname, account_lastname, account_email } =
+    req.body;
+
+  // Get the current account info
+  const currentAccountStatus = await accountModel.getAccountByAccountId(
+    account_id
+  );
+  // Check whether e-mail exists
+  const emailExists = await accountModel.checkExistingEmail(account_email);
+
+  if (currentAccountStatus.account_email !== account_email && emailExists) {
+    throw new Error("Email exists. Please log in or use different email");
+  }
+  const regResult = await accountModel.updateAccountData(
+    account_firstname,
+    account_lastname,
+    account_email,
+    account_id
+  );
+
+  if (regResult) {
+    const currentAccountStatus = await accountModel.getAccountByAccountId(
+      account_id
+    );
+    // "Global" variable
+
+    delete currentAccountStatus.account_password;
+    global.new_accountData = currentAccountStatus;
+    // res.locals.accountData.account_firstname = currentAccountStatus;
+    req.flash("notice", `Congratulations, you have updated the account data.`);
+    return res.redirect("/account");
+    next();
+  } else {
+    req.flash("notice", "Sorry, the update account procedure failed.");
+    res.status(501).redirect("/account");
+  }
+}
+
+// Update Account Password
+async function updateAccountPassword(req, res, next) {
+  const { account_password, account_id } = req.body;
+
+  // Hash the password before storing/updating
+  let hashedPassword;
+  try {
+    // regular password and cost (salt is generated automatically)
+    hashedPassword = bcrypt.hashSync(account_password, 10);
+  } catch (error) {
+    req.flash("notice", "Sorry, there was an error processing the hash.");
+    return res.redirect("/account");
+  }
+
+  const regResult = await accountModel.updateAccountPassword(
+    hashedPassword,
+    account_id
+  );
+
+  if (regResult) {
+    const currentAccountStatus = await accountModel.getAccountByAccountId(
+      account_id
+    );
+    delete currentAccountStatus.account_password;
+    // "Global" variable
+    global.new_accountData = currentAccountStatus;
+    console.log({ newAccountData: res.locals.accountData });
+    req.flash("notice", `Congratulations, you have updated the password.`);
+    return res.redirect("/account");
+  } else {
+    req.flash("notice", "Sorry, the update password procedure failed.");
+    return res.redirect("/account/");
+  }
+}
+
+async function accountLogout(req, res, next) {
+  res.clearCookie("jwt");
+
+  req.flash("notice", "User has disconnected from the current session!");
+  return res.redirect("/account/login");
+  next();
+}
+
 module.exports = {
   buildLogin,
   buildRegister,
   registerAccount,
   buildManagementView,
   accountLogin,
+  buildEditAccountView,
+  updateAccount,
+  updateAccountPassword,
+  accountLogout,
 };

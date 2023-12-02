@@ -2,39 +2,39 @@
     <h1>
         <%= title %>
     </h1>
-    <%- messages() %>
-        <% if (errors) { %>
-            <ul class="notice">
-                <% errors.array().forEach(error=> { %>
-                    <li>
-                        <%= error.msg %>
-                    </li>
-                    <% }) %>
-            </ul>
-            <% } %>
-                <div class="items-container">
-                    <form class="form-container" action="/account/login" method="post">
-                        <div class="input-container">
-                            <label for="loginEmail">Email:</label>
-                            <input type="text" name="account_email" id="loginEmail" required
-                                value="<%= locals.account_email %>">
-                        </div>
-                        <div class="input-container">
-                            <label for="login-password">Password:</label>
-                            <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital
-                                letter and 1
-                                special character</span>
-                            <!-- Must have 1 capital letter, 1 number and special character -->
-                            <input type="password" name="account_password" min="12" id="password"
-                                pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
-                                placeholder="Password" required>
-                        </div>
-                        <div class="button-container">
-                            <button class="button" type="submit">LOGIN</button>
-                        </div>
-                        <div class="items-container-footer">
-                            <p>No account? <a href="/account/registration">Sign-up</a></p>
-                        </div>
-                    </form>
-                </div>
-                <% } else { res.redirect('/') } %>
+    <% } else { res.redirect('/') } %>
+        <%- messages() %>
+            <% if (errors) { %>
+                <ul class="notice">
+                    <% errors.array().forEach(error=> { %>
+                        <li>
+                            <%= error.msg %>
+                        </li>
+                        <% }) %>
+                </ul>
+                <% } %>
+                    <div class="items-container">
+                        <form class="form-container" action="/account/login" method="post">
+                            <div class="input-container">
+                                <label for="loginEmail">Email:</label>
+                                <input type="text" name="account_email" id="loginEmail" required
+                                    value="<%= locals.account_email %>">
+                            </div>
+                            <div class="input-container">
+                                <label for="login-password">Password:</label>
+                                <span>Passwords must be at least 12 characters and contain at least 1 number, 1 capital
+                                    letter and 1
+                                    special character</span>
+                                <!-- Must have 1 capital letter, 1 number and special character -->
+                                <input type="password" name="account_password" min="12" id="password"
+                                    pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{12,}$"
+                                    placeholder="Password" required>
+                            </div>
+                            <div class="button-container">
+                                <button class="button" type="submit">LOGIN</button>
+                            </div>
+                            <div class="items-container-footer">
+                                <p>No account? <a href="/account/registration">Sign-up</a></p>
+                            </div>
+                        </form>
+                    </div>

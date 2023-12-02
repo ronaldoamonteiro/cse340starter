@@ -1,3 +1,4 @@
+const { request } = require("express");
 const invModel = require("../models/inventory-model");
 const Util = {};
 const jwt = require("jsonwebtoken");
@@ -162,8 +163,16 @@ Util.checkJWTToken = (req, res, next) => {
           res.clearCookie("jwt");
           return res.redirect("/account/login");
         }
+        // If there is not 'accountData' attribute, it creates one
+        if (global.new_accountData) {
+          res.locals.accountData = {
+            ...accountData,
+            ...global.new_accountData,
+          };
+        } else {
+          res.locals.accountData = accountData;
+        }
 
-        res.locals.accountData = accountData;
         res.locals.loggedin = 1;
         next();
       }
