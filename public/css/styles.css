@@ -351,6 +351,7 @@ footer {
 
 .input-container span {
   max-width: 20rem;
+  color: var(--light);
 }
 
 .input-container input {
@@ -395,7 +396,7 @@ input:required:valid {
 }
 
 .notice li {
-  color: red;
+  color: var(--blue);
 }
 
 table {
