@@ -45,6 +45,7 @@ invCont.showProductByInvId = async function (req, res, next) {
     const inventory_id = req.params.inventoryId;
 
     const data = await invModel.getProductByInventoryId(inventory_id);
+    console.log({ locals: res.locals.accountData });
     const commentSection = await utilities.buildCommentSection(
       inventory_id,
       res.locals.accountData.account_id
@@ -419,25 +420,24 @@ invCont.buildCreateCommentView = async function (req, res, next) {
 
 // Comment
 invCont.addCommentForInventoryItem = async (req, res) => {
-  const { inv_id, comment_account_id, comment_description } = req.body;
-  console.log({ inv_id, comment_account_id, comment_description });
+  const { inv_id, account_id, comment_description } = req.body;
   try {
     const registerCommentReturn = await invModel.registerComment(
       comment_description,
       inv_id,
-      comment_account_id
+      account_id
     );
     console.log({ registerCommentReturn });
     req.flash("notice", "Comment successfully inserted!");
     // Create a variable for button enable
-    res.render(`/inv/detail/${inv_id}`);
+    res.redirect(`/inv/detail/${inv_id}`);
   } catch (error) {
     req.flash("notice", error.message);
     res.redirect(`/inv/detail/${inv_id}`);
   }
 };
 
-// Edit Comment
+// Edit Comment View
 invCont.buildEditCommentView = async (req, res) => {
   const { inv_id, comment_id } = req.params;
 
@@ -467,6 +467,39 @@ invCont.editCommentForInventoryItem = async (req, res) => {
     );
     console.log({ registerCommentReturn });
     req.flash("notice", "Comment successfully updated!");
+    // Create a variable for button enable
+    res.redirect(`/inv/detail/${inv_id}`);
+  } catch (error) {
+    req.flash("notice", error.message);
+    res.redirect(`/inv/detail/${inv_id}`);
+  }
+};
+
+// Edit Comment View
+invCont.buildDeleteCommentView = async (req, res) => {
+  const { inv_id, comment_id } = req.params;
+
+  const { comment_description, account_id } =
+    await invModel.getCommentByCommentId(Number(comment_id));
+
+  const nav = await utilities.getNav();
+  res.render("./inventory/delete-comment", {
+    title: "Delete comment",
+    errors: null,
+    nav,
+    inv_id,
+    comment_id,
+    comment_description,
+    account_id,
+  });
+};
+
+// Delete Comment
+invCont.deleteCommentForInventoryView = async (req, res) => {
+  const { comment_id, inv_id } = req.body;
+  try {
+    await invModel.deleteCommentByCommentId(Number(comment_id));
+    req.flash("notice", "Comment successfully deleted!");
     // Create a variable for button enable
     res.redirect(`/inv/detail/${inv_id}`);
   } catch (error) {

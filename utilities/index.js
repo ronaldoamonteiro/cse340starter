@@ -101,7 +101,7 @@ Util.buildCommentSection = async function (inventory_id, account_id) {
       timeStyle: "short",
       dateStyle: "short",
     }).format(comment.comment_created_at)}</span>`;
-    grid += `<span>Updated at:${Intl.DateTimeFormat("en-us", {
+    grid += `<span>Updated at: ${Intl.DateTimeFormat("en-us", {
       timeStyle: "short",
       dateStyle: "short",
     }).format(comment.comment_updated_at)}</span>`;
@@ -110,7 +110,7 @@ Util.buildCommentSection = async function (inventory_id, account_id) {
       // res.locals.hasUserAlreadyCommented = true;
       grid += "<div class='button-container'>";
       grid += `<a class='outlined blue' href='/inv/detail/${inventory_id}/edit-comment/${comment.comment_id}'>Edit</a>`;
-      grid += "<a class='filled red' href=''>Delete</a>";
+      grid += `<a class='outlined red' href='/inv/detail/${inventory_id}/delete-comment/${comment.comment_id}'>Delete</a>`;
       grid += "</div>";
     }
     grid += "</div>";

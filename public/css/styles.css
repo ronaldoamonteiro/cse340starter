@@ -465,8 +465,9 @@ textarea {
 }
 
 .red {
-  background: red;
+  background: #b71c1c;
   color: white;
+  border: none;
 }
 @media (max-width: 576px) {
   html {

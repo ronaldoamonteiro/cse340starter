@@ -227,10 +227,27 @@ async function getCommentByCommentId(comment_id, comment_description) {
 
 async function editCommentByCommentId(comment_id, comment_description) {
   try {
+    const updated_at = new Date().toISOString();
     const sql =
-      "UPDATE public.comment SET comment_description = $1 WHERE comment_id = $2";
-    const data = await pool.query(sql, [comment_description, comment_id]);
+      "UPDATE public.comment SET comment_description = $1, comment_updated_at = $2 WHERE comment_id = $3";
+    const data = await pool.query(sql, [
+      comment_description,
+      updated_at,
+      comment_id,
+    ]);
     return data.rows[0];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
+async function deleteCommentByCommentId(comment_id) {
+  try {
+    const sql = "DELETE FROM public.comment WHERE comment_id = $1";
+    const data = await pool.query(sql, [comment_id]);
+    return data;
   } catch (error) {
     if (error instanceof Error) {
       throw new Error(error.message);
@@ -251,4 +268,5 @@ module.exports = {
   getCommentsByInvIdAndAccountId,
   getCommentByCommentId,
   editCommentByCommentId,
+  deleteCommentByCommentId,
 };

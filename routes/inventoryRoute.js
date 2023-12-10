@@ -104,4 +104,14 @@ router.post(
   utilities.handleErrors(invController.editCommentForInventoryItem)
 );
 
+router.get(
+  "/detail/:inv_id/delete-comment/:comment_id",
+  utilities.handleErrors(invController.buildDeleteCommentView)
+);
+
+router.post(
+  "/detail/:inv_id/delete-comment/:comment_id",
+  utilities.handleErrors(invController.deleteCommentForInventoryView)
+);
+
 module.exports = router;
