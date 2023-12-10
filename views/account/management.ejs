@@ -13,18 +13,17 @@
       </ul>
       <% } %>
         <% } %>
-          <% console.log({accountData: locals.accountData}) %>
-            <% if (locals.accountData.account_type==='Client' ) { %>
+          <% if (locals.accountData.account_type==='Client' ) { %>
+            <h2>Welcome, <%= locals.accountData.account_firstname%>!
+            </h2>
+            <p><a title="Update user data" href="/account/update/<%= locals.accountData.account_id%>">Edit Account
+                Information</a></p>
+            <% } else { %>
               <h2>Welcome, <%= locals.accountData.account_firstname%>!
               </h2>
               <p><a title="Update user data" href="/account/update/<%= locals.accountData.account_id%>">Edit Account
                   Information</a></p>
-              <% } else { %>
-                <h2>Welcome, <%= locals.accountData.account_firstname%>!
-                </h2>
-                <p><a title="Update user data" href="/account/update/<%= locals.accountData.account_id%>">Edit Account
-                    Information</a></p>
-                <p>
-                  <a title="Access Inventory Management" href="./inv">Manage Inventory</a>
-                </p>
-                <% } %>
+              <p>
+                <a title="Access Inventory Management" href="./inv">Manage Inventory</a>
+              </p>
+              <% } %>

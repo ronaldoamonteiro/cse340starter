@@ -220,7 +220,6 @@ async function updateAccountPassword(req, res, next) {
     delete currentAccountStatus.account_password;
     // "Global" variable
     global.new_accountData = currentAccountStatus;
-    console.log({ newAccountData: res.locals.accountData });
     req.flash("notice", `Congratulations, you have updated the password.`);
     return res.redirect("/account");
   } else {

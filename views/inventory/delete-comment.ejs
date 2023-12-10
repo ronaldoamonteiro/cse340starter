@@ -4,33 +4,32 @@
   </h1>
   <% } else { res.redirect('/') } %>
     <%- messages() %>
-      <% console.log({hasUserAlreadyCommented: locals.hasUserAlreadyCommented})%>
-        <% if (errors) { %>
-          <ul class="notice">
-            <% errors.array().forEach(error=> { %>
-              <li>
-                <%= error.msg %>
-              </li>
-              <% }) %>
-          </ul>
-          <% } %>
-            <div class="items-container">
-              <form class="form-container"
-                action="/inv/detail/<%= locals.inv_id%>/delete-comment/<%= locals.comment_id%>" method="post">
-                <div class="input-container">
-                  <label for="description">Description:</label>
-                  <input type="text" name="comment_description" disabled="true" id="description" required
-                    value="<%= locals.comment_description %>">
-                </div>
-                <div class="button-container">
-                  <button class="button" type="submit">Delete Comment</button>
-                </div>
-                <input type="hidden" name="comment_id" <% if(locals.comment_id) { %> value="<%= locals.comment_id %>"
-                  <% } %>>
-                    <input type="hidden" name="account_id" <% if(locals.accountData.account_id) { %> value="<%=
-                      locals.accountData.account_id %>"
-                      <% } %>>
-                        <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
-                          <% } %>>
-              </form>
-            </div>
+      <% if (errors) { %>
+        <ul class="notice">
+          <% errors.array().forEach(error=> { %>
+            <li>
+              <%= error.msg %>
+            </li>
+            <% }) %>
+        </ul>
+        <% } %>
+          <div class="items-container">
+            <form class="form-container" action="/inv/detail/<%= locals.inv_id%>/delete-comment/<%= locals.comment_id%>"
+              method="post">
+              <div class="input-container">
+                <label for="description">Description:</label>
+                <input type="text" name="comment_description" disabled="true" id="description" required
+                  value="<%= locals.comment_description %>">
+              </div>
+              <div class="button-container">
+                <button class="button" type="submit">Delete Comment</button>
+              </div>
+              <input type="hidden" name="comment_id" <% if(locals.comment_id) { %> value="<%= locals.comment_id %>"
+                <% } %>>
+                  <input type="hidden" name="account_id" <% if(locals.accountData.account_id) { %> value="<%=
+                    locals.accountData.account_id %>"
+                    <% } %>>
+                      <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+                        <% } %>>
+            </form>
+          </div>

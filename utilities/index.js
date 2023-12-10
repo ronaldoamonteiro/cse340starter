@@ -87,8 +87,6 @@ Util.buildCommentSection = async function (inventory_id, account_id) {
     inventory_id
   );
 
-  console.log({ retrieveComments });
-
   grid += "<div class='comment-section'>";
   for (comment of retrieveComments) {
     const { account_firstname, account_lastname } =

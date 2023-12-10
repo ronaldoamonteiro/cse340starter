@@ -45,7 +45,6 @@ invCont.showProductByInvId = async function (req, res, next) {
     const inventory_id = req.params.inventoryId;
 
     const data = await invModel.getProductByInventoryId(inventory_id);
-    console.log({ locals: res.locals.accountData });
     const commentSection = await utilities.buildCommentSection(
       inventory_id,
       res.locals.accountData.account_id
@@ -371,7 +370,6 @@ invCont.buildDeleteInventoryItemView = async (req, res, next) => {
 
 // Form deletion
 invCont.deleteInventoryItem = async (req, res, next) => {
-  console.log({ body: req.body });
   const { inv_id, inv_make, inv_model, inv_year, inv_price } = req.body;
   const deleteResult = await invModel.deleteInventoryItem(parseInt(inv_id));
 
@@ -422,12 +420,7 @@ invCont.buildCreateCommentView = async function (req, res, next) {
 invCont.addCommentForInventoryItem = async (req, res) => {
   const { inv_id, account_id, comment_description } = req.body;
   try {
-    const registerCommentReturn = await invModel.registerComment(
-      comment_description,
-      inv_id,
-      account_id
-    );
-    console.log({ registerCommentReturn });
+    await invModel.registerComment(comment_description, inv_id, account_id);
     req.flash("notice", "Comment successfully inserted!");
     // Create a variable for button enable
     res.redirect(`/inv/detail/${inv_id}`);
@@ -459,13 +452,8 @@ invCont.buildEditCommentView = async (req, res) => {
 // Edit Comment
 invCont.editCommentForInventoryItem = async (req, res) => {
   const { inv_id, comment_description, comment_id } = req.body;
-  console.log({ inv_id, comment_description, comment_id });
   try {
-    const registerCommentReturn = await invModel.editCommentByCommentId(
-      comment_id,
-      comment_description
-    );
-    console.log({ registerCommentReturn });
+    await invModel.editCommentByCommentId(comment_id, comment_description);
     req.flash("notice", "Comment successfully updated!");
     // Create a variable for button enable
     res.redirect(`/inv/detail/${inv_id}`);
