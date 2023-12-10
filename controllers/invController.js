@@ -435,26 +435,44 @@ invCont.addCommentForInventoryItem = async (req, res) => {
     req.flash("notice", error.message);
     res.redirect(`/inv/detail/${inv_id}`);
   }
-  // if (regResult) {
-  //   req.flash("notice", `Classification name successfully registered!`);
-  //   const nav = await utilities.getNav();
-  //   res.status(201).render("./inventory/management", {
-  //     title: "Management View",
-  //     nav,
-  //     errors: null,
-  //     classificationSelect,
-  //   });
-  // } else {
-  //   req.flash("notice", "Sorry, the classification registration failed.");
-  //   let nav = await utilities.getNav();
-  //   res.status(501).render("./inventory/add-classification", {
-  //     title: "Create Classification",
-  //     nav,
-  //     classification_name,
-  //     errors: null,
-  //     classificationSelect,
-  //   });
-  // }
+};
+
+// Edit Comment
+invCont.buildEditCommentView = async (req, res) => {
+  const { inv_id, comment_id } = req.params;
+
+  const { comment_description, account_id } =
+    await invModel.getCommentByCommentId(comment_id);
+
+  const nav = await utilities.getNav();
+  res.render("./inventory/edit-comment", {
+    title: "Edit comment",
+    errors: null,
+    nav,
+    inv_id,
+    comment_id,
+    comment_description,
+    account_id,
+  });
+};
+
+// Edit Comment
+invCont.editCommentForInventoryItem = async (req, res) => {
+  const { inv_id, comment_description, comment_id } = req.body;
+  console.log({ inv_id, comment_description, comment_id });
+  try {
+    const registerCommentReturn = await invModel.editCommentByCommentId(
+      comment_id,
+      comment_description
+    );
+    console.log({ registerCommentReturn });
+    req.flash("notice", "Comment successfully updated!");
+    // Create a variable for button enable
+    res.redirect(`/inv/detail/${inv_id}`);
+  } catch (error) {
+    req.flash("notice", error.message);
+    res.redirect(`/inv/detail/${inv_id}`);
+  }
 };
 
 // TODO: Create controller for inventory form

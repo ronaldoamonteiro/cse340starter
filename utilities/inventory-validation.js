@@ -190,4 +190,55 @@ validate.checkUpdateData = async (req, res, next) => {
   next();
 };
 
+/**
+ * Comments validation
+ */
+validate.commentRules = () => {
+  return [
+    body("comment_description")
+      .trim()
+      .isLength({ min: 1 })
+      .withMessage("Please, provide a comment!"),
+  ];
+};
+
+validate.checkAddCommentData = async (req, res, next) => {
+  const { comment_description, inv_id } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render("./inventory/add-classification", {
+      title: "Create Comment",
+      errors,
+      nav,
+      comment_description,
+      inv_id,
+    });
+    return;
+  }
+  next();
+};
+// Edit Comment
+validate.checkEditCommentData = async (req, res, next) => {
+  const { comment_description, inv_id, comment_id } = req.body;
+  let errors = [];
+  errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    let nav = await utilities.getNav();
+    res.render("./inventory/edit-classification", {
+      title: "Edit Comment",
+      errors,
+      nav,
+      comment_description,
+      comment_id,
+      inv_id,
+    });
+    return;
+  }
+  next();
+};
+
 module.exports = validate;

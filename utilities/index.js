@@ -109,7 +109,7 @@ Util.buildCommentSection = async function (inventory_id, account_id) {
     if (account_id === comment.account_id) {
       // res.locals.hasUserAlreadyCommented = true;
       grid += "<div class='button-container'>";
-      grid += `<a class='outlined blue' href='/detail/${inventory_id}/edit-comment/${comment.comment_id}'>Edit</a>`;
+      grid += `<a class='outlined blue' href='/inv/detail/${inventory_id}/edit-comment/${comment.comment_id}'>Edit</a>`;
       grid += "<a class='filled red' href=''>Delete</a>";
       grid += "</div>";
     }

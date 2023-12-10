@@ -86,11 +86,21 @@ router.get(
 );
 router.post(
   "/detail/:inv_id/add-comment",
+  invValidate.commentRules(),
+  invValidate.checkAddCommentData,
   utilities.handleErrors(invController.addCommentForInventoryItem)
 );
 
+// Edit Comment Page
 router.get(
   "/detail/:inv_id/edit-comment/:comment_id",
+  utilities.handleErrors(invController.buildEditCommentView)
+);
+// Edit comment submission
+router.post(
+  "/detail/:inv_id/edit-comment/:comment_id",
+  invValidate.commentRules(),
+  invValidate.checkEditCommentData,
   utilities.handleErrors(invController.editCommentForInventoryItem)
 );
 

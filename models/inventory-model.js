@@ -212,6 +212,31 @@ async function getCommentsByInvIdAndAccountId(inv_id) {
     throw new Error("Error retrieving comments");
   }
 }
+
+async function getCommentByCommentId(comment_id, comment_description) {
+  try {
+    const sql = "SELECT * FROM public.comment WHERE comment_id = $1";
+    const data = await pool.query(sql, [comment_id]);
+    return data.rows[0];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
+
+async function editCommentByCommentId(comment_id, comment_description) {
+  try {
+    const sql =
+      "UPDATE public.comment SET comment_description = $1 WHERE comment_id = $2";
+    const data = await pool.query(sql, [comment_description, comment_id]);
+    return data.rows[0];
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new Error(error.message);
+    }
+  }
+}
 module.exports = {
   getClassifications,
   getInventoryByClassificationId,
@@ -224,4 +249,6 @@ module.exports = {
   deleteInventoryItem,
   registerComment,
   getCommentsByInvIdAndAccountId,
+  getCommentByCommentId,
+  editCommentByCommentId,
 };
