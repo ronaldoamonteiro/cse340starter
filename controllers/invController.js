@@ -43,8 +43,13 @@ invCont.buildByClassificationId = async function (req, res, next) {
 invCont.showProductByInvId = async function (req, res, next) {
   try {
     const inventory_id = req.params.inventoryId;
+
     const data = await invModel.getProductByInventoryId(inventory_id);
-    const grid = await utilities.buildProductDetailView([data]);
+    const commentSection = await utilities.buildCommentSection(
+      inventory_id,
+      res.locals.accountData.account_id
+    );
+    const grid = await utilities.buildProductDetailView([data], commentSection);
     let nav = await utilities.getNav();
     res.render("./inventory/classification", {
       title: data.inv_year + " " + data.inv_make + " " + data.inv_model,
@@ -387,6 +392,69 @@ invCont.deleteInventoryItem = async (req, res, next) => {
       inv_price,
     });
   }
+};
+
+// View for the classification form
+invCont.buildCreateCommentView = async function (req, res, next) {
+  try {
+    // Call navbar and render the add-classification.ejs view
+    const inventoryId = Number(req.params.inv_id);
+    const nav = await utilities.getNav();
+    res.render("./inventory/add-comment", {
+      title: "Add comment",
+      nav,
+      errors: null,
+      inv_id: inventoryId,
+    });
+  } catch (e) {
+    if (e instanceof Error) {
+      console.log(e.message);
+      next({
+        status: e.code,
+        message: e.message,
+      });
+    }
+  }
+};
+
+// Comment
+invCont.addCommentForInventoryItem = async (req, res) => {
+  const { inv_id, comment_account_id, comment_description } = req.body;
+  console.log({ inv_id, comment_account_id, comment_description });
+  try {
+    const registerCommentReturn = await invModel.registerComment(
+      comment_description,
+      inv_id,
+      comment_account_id
+    );
+    console.log({ registerCommentReturn });
+    req.flash("notice", "Comment successfully inserted!");
+    // Create a variable for button enable
+    res.render(`/inv/detail/${inv_id}`);
+  } catch (error) {
+    req.flash("notice", error.message);
+    res.redirect(`/inv/detail/${inv_id}`);
+  }
+  // if (regResult) {
+  //   req.flash("notice", `Classification name successfully registered!`);
+  //   const nav = await utilities.getNav();
+  //   res.status(201).render("./inventory/management", {
+  //     title: "Management View",
+  //     nav,
+  //     errors: null,
+  //     classificationSelect,
+  //   });
+  // } else {
+  //   req.flash("notice", "Sorry, the classification registration failed.");
+  //   let nav = await utilities.getNav();
+  //   res.status(501).render("./inventory/add-classification", {
+  //     title: "Create Classification",
+  //     nav,
+  //     classification_name,
+  //     errors: null,
+  //     classificationSelect,
+  //   });
+  // }
 };
 
 // TODO: Create controller for inventory form

@@ -1,5 +1,6 @@
 const { request } = require("express");
 const invModel = require("../models/inventory-model");
+const accountModel = require("../models/account-model");
 const Util = {};
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -80,7 +81,48 @@ Util.buildClassificationGrid = async function (data) {
   return grid;
 };
 
-Util.buildProductDetailView = async function (data) {
+Util.buildCommentSection = async function (inventory_id, account_id) {
+  let grid = "";
+  const retrieveComments = await invModel.getCommentsByInvIdAndAccountId(
+    inventory_id
+  );
+
+  console.log({ retrieveComments });
+
+  grid += "<div class='comment-section'>";
+  for (comment of retrieveComments) {
+    const { account_firstname, account_lastname } =
+      await accountModel.getAccountByAccountId(comment.account_id);
+    grid += "<div class='individual-comment'>";
+    grid += `<h3>${account_firstname} ${account_lastname}</h3>`;
+    grid += `<span>Description: ${comment.comment_description}</span>`;
+    grid += "<div class='comment-datetime'>";
+    grid += `<span>Created at: ${Intl.DateTimeFormat("en-us", {
+      timeStyle: "short",
+      dateStyle: "short",
+    }).format(comment.comment_created_at)}</span>`;
+    grid += `<span>Updated at:${Intl.DateTimeFormat("en-us", {
+      timeStyle: "short",
+      dateStyle: "short",
+    }).format(comment.comment_updated_at)}</span>`;
+    grid += "</div>";
+    if (account_id === comment.account_id) {
+      // res.locals.hasUserAlreadyCommented = true;
+      grid += "<div class='button-container'>";
+      grid += `<a class='outlined blue' href='/detail/${inventory_id}/edit-comment/${comment.comment_id}'>Edit</a>`;
+      grid += "<a class='filled red' href=''>Delete</a>";
+      grid += "</div>";
+    }
+    grid += "</div>";
+  }
+  grid += "</div>";
+
+  console.log({ grid });
+
+  return grid;
+};
+
+Util.buildProductDetailView = async function (data, commentGrid) {
   let grid;
   if (data.length > 0) {
     grid = `<div id="product-detail-container">`;
@@ -125,7 +167,12 @@ Util.buildProductDetailView = async function (data) {
       grid += "</li>";
       grid += "</ul>";
     });
+
     grid += "</div>";
+    // Add Comment Button
+    grid += `<button class='button'><a href='/inv/detail/${data[0].inv_id}/add-comment'>Add Comment</a></button>`;
+    // Comment section
+    grid += commentGrid;
   }
 
   return grid;

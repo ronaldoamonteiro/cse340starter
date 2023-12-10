@@ -76,4 +76,22 @@ router.post(
   utilities.handleErrors(invController.deleteInventoryItem)
 );
 
+/**
+ *
+ * Comments routes
+ */
+router.get(
+  "/detail/:inv_id/add-comment",
+  utilities.handleErrors(invController.buildCreateCommentView)
+);
+router.post(
+  "/detail/:inv_id/add-comment",
+  utilities.handleErrors(invController.addCommentForInventoryItem)
+);
+
+router.get(
+  "/detail/:inv_id/edit-comment/:comment_id",
+  utilities.handleErrors(invController.editCommentForInventoryItem)
+);
+
 module.exports = router;

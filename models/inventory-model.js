@@ -175,7 +175,41 @@ async function deleteInventoryItem(inv_id) {
     const data = await pool.query(sql, [inv_id]);
     return data;
   } catch (error) {
-    new Error("Delete Inventory Error");
+    throw new Error("Delete Inventory Error");
+  }
+}
+
+/* ***************************
+ *  Comment Section
+ * ************************** */
+async function registerComment(comment_description, inv_id, account_id) {
+  try {
+    const created_comment = new Date().toISOString();
+    const sql =
+      "INSERT INTO public.comment (comment_description, comment_created_at, comment_updated_at, inv_id, account_id) VALUES ($1, $2, $3, $4, $5)";
+    const data = await pool.query(sql, [
+      comment_description,
+      created_comment,
+      created_comment,
+      inv_id,
+      account_id,
+    ]);
+
+    return data.rows;
+  } catch (error) {
+    throw new Error(
+      "User has already commented in this inventory item! You are not allowed to insert a new comment! Please, edit your original one!"
+    );
+  }
+}
+
+async function getCommentsByInvIdAndAccountId(inv_id) {
+  try {
+    const sql = "SELECT * FROM public.comment WHERE inv_id = $1";
+    const data = await pool.query(sql, [inv_id]);
+    return data.rows;
+  } catch (error) {
+    throw new Error("Error retrieving comments");
   }
 }
 module.exports = {
@@ -188,4 +222,6 @@ module.exports = {
   registerInventoryItem,
   updateInventory,
   deleteInventoryItem,
+  registerComment,
+  getCommentsByInvIdAndAccountId,
 };

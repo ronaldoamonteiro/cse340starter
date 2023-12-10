@@ -1,0 +1,33 @@
+<% if (title) { %>
+  <h1>
+    <%= title %>
+  </h1>
+  <% } else { res.redirect('/') } %>
+    <%- messages() %>
+      <% console.log({hasUserAlreadyCommented: locals.hasUserAlreadyCommented})%>
+        <% if (errors) { %>
+          <ul class="notice">
+            <% errors.array().forEach(error=> { %>
+              <li>
+                <%= error.msg %>
+              </li>
+              <% }) %>
+          </ul>
+          <% } %>
+            <div class="items-container">
+              <form class="form-container" action="/inv/detail/<%= locals.inv_id%>/add-comment" method="post">
+                <div class="input-container">
+                  <label for="description">Description:</label>
+                  <textarea type="text" name="comment_description" id="description" required
+                    value="<%= locals.comment_description %>"></textarea>
+                </div>
+                <div class="button-container">
+                  <button class="button" type="submit">Add Comment</button>
+                </div>
+                <input type="hidden" name="comment_account_id" <% if(locals.accountData.account_id) { %> value="<%=
+                  locals.accountData.account_id %>"
+                  <% } %>>
+                    <input type="hidden" name="inv_id" <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+                      <% } %>>
+              </form>
+            </div>

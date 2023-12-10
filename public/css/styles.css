@@ -374,6 +374,11 @@ footer {
   cursor: pointer;
 }
 
+.button-container {
+  display: flex;
+  gap: 16px;
+}
+
 .button-container button:hover {
   transform: scale(1.1);
 }
@@ -412,6 +417,57 @@ tbody td a {
   color: #222;
 }
 
+textarea {
+  max-width: 580px;
+  max-height: 300px;
+  min-height: 120px;
+  min-width: 240px;
+}
+
+/* Comment Section */
+.comment-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--blue);
+}
+
+.individual-comment {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--blue);
+}
+.comment-datetime {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: flex-end;
+}
+
+.outlined {
+  background: transparent;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: 1px solid var(--blue);
+  box-sizing: border-box;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filled {
+  cursor: pointer;
+  text-decoration: none;
+  padding: 8px 16px;
+  border: none;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.red {
+  background: red;
+  color: white;
+}
 @media (max-width: 576px) {
   html {
     font-size: 62.5%;
